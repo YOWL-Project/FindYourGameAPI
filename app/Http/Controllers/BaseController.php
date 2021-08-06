@@ -13,7 +13,7 @@ class BaseController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function sendResponse($result, $message)
+    public function sendResponse($result, $message, $status = 200)
 
     {
 
@@ -28,7 +28,7 @@ class BaseController extends Controller
         ];
 
 
-        return response()->json($response, 200);
+        return response()->json($response, $status);
 
     }
 
@@ -39,7 +39,7 @@ class BaseController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function sendError($error, $errorMessages = [], $code = 404)
+    public function sendError($error, $errorMessages = [], $status = 404)
 
     {
 
@@ -59,7 +59,7 @@ class BaseController extends Controller
         }
 
 
-        return response()->json($response, $code);
+        return response()->json($response, $status);
 
     }
 }

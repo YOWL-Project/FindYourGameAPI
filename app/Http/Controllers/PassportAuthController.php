@@ -19,42 +19,47 @@ class PassportAuthController extends BaseController
     public function register(Request $request)
 
     {
+        $data = $request->all();
 
-        $validator = Validator::make($request->all(), [
+        // make sure the request have all necessary input
+
+        $validator = Validator::make($data, [
 
             'name' => 'required|unique:users',
 
             'email' => 'required|email|unique:users',
 
-            'password' => 'required',
+            'password' => 'required|confirmed',
+
+            'admin' => 'sometimes|digits_between:0,1'
 
         ]);
 
    
 
+        //send error with bad request status if validator fail
+
         if($validator->fails()){
 
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors(), 400);       
 
         }
 
    
 
-        $input = $request->all();
+        // register new user in database
 
-        $input['password'] = bcrypt($input['password']);
+        $data['password'] = bcrypt($data['password']);
 
-        $user = User::create($input);
+        $user = User::create($data);
 
         $user['token'] =  $user->createToken('MyApp')->accessToken;
 
-        $user['name'] =  $user->name;
-
-        $user['admin'] = $user->admin;
+        $message = "SUBSCRIPTION CONFIRMED !";
 
    
 
-        return $this->sendResponse($user,'Votre compte a été enregistré avec succès');
+        return $this->sendResponse($user,$message, 201);
 
     }
 
@@ -70,21 +75,39 @@ class PassportAuthController extends BaseController
 
     {
 
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
+        // make sure the request have all necessary input
 
-            $user = Auth::user(); 
+        $validator = Validator::make($request->all(), [
 
-            $user['token'] =  $user->createToken('MyApp')->accessToken;    
+            'email' => 'required|email|exists:users',
 
-            return $this->sendResponse($user, 'User login successfully.');
+            'password' => 'required',
+
+        ]);
+
+        //send error with bad request status if validator fail
+
+        if($validator->fails()){
+
+            return $this->sendError('Validation Error.', $validator->errors(), 400);       
+
+        }
+
+        //check if input are valid and exist in database
+
+        if(!Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 401);
 
         } 
 
-        else{ 
+        $user = Auth::user();
 
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+        $user['token'] =  $user->createToken('MyApp')->accessToken;
 
-        } 
+        $message = 'User login successfully.';
+
+        return $this->sendResponse($user, $message, 200);
 
     }
 }
