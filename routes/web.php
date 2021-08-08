@@ -1,4 +1,5 @@
 <?php
+// renommer .env.exemple en .env et php artisan key generate
 
 use Illuminate\Support\Facades\Route;
 
