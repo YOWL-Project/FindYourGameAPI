@@ -24,6 +24,8 @@ Route::post("register",[PassportAuthController::class,'register']);
 
 Route::post("login",[PassportAuthController::class,'login']);
 
+Route::post("logout", [PassportAuthController::class,'logout']);
+
 Route::get("tests",[TestController::class,'listTests']);
  
 Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');

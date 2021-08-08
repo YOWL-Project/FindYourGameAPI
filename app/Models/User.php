@@ -12,6 +12,15 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+     /**
+     * The attributes that have default value.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'isadmin' => 0,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,7 +30,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'admin',
+        'isadmin',
     ];
 
     /**

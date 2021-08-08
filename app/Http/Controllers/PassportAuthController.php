@@ -31,7 +31,7 @@ class PassportAuthController extends BaseController
 
             'password' => 'required|confirmed',
 
-            'admin' => 'sometimes|digits_between:0,1'
+            'isadmin' => 'sometimes|boolean',
 
         ]);
 
@@ -108,6 +108,30 @@ class PassportAuthController extends BaseController
         $message = 'User login successfully.';
 
         return $this->sendResponse($user, $message, 200);
+
+    }
+
+
+
+     /**
+     * Logout api
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function logout(Request $request)
+
+    {
+
+        if (!Auth::check()) {
+            return $this->sendError('User not Authenticated', ['error' => 'Not Authenticated'], 401);
+        }
+
+        $user = Auth::user();
+
+        $user->token()->revoke();
+
+        return $this->sendResponse($user, "LOGOUT SUCCESFULLY !", 200);
 
     }
 }
