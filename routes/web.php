@@ -2,6 +2,7 @@
 // renommer .env.exemple en .env et php artisan key generate
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('votes', [VoteController::class, 'index']);
