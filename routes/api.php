@@ -22,6 +22,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post("visit", [DashboardController::class, 'add_visit']);
+
+
+
 Route::post("register",[PassportAuthController::class,'register']);
 
 Route::post("login",[PassportAuthController::class,'login']);
@@ -33,6 +37,17 @@ Route::get("tests",[TestController::class,'listTests']);
 Route::get("topics/votes/count", [DashboardController::class,'count_vote_topic']);
  
 Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');
+
+//route dasboard
+Route::get("conversion", [DasboardController::class, 'conversion']);
+
+Route::group(['prefix' => 'count'], function () {
+    Route::get("/visits/{duration}", [DasboardController::class, 'count_visit']);
+    Route::get("/inscriptions/{duration}", [DasboardController::class, 'count_inscription']);
+    // Route::get("/comments/{duration}", [DasboardController::class, 'count_inscription']);
+    // Route::get("/games", [DasboardController::class, 'count_inscription']);
+});
+
 
 // routes users
 Route::group(['prefix' => 'users'], function () {
