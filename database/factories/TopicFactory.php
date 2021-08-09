@@ -2,19 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Comment;
-use App\Models\User;
 use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CommentFactory extends Factory
+class TopicFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Comment::class;
+    protected $model = Topic::class;
 
     /**
      * Define the model's default state.
@@ -24,10 +23,10 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'topic_id' => Topic::all()->random()->id,
+            'game_id' => random_int(0,500),
             'user_id' => User::all()->random()->id,
-            'content' => $this->faker->text,
-            'created_at' => now(),
+            'title' => $this->faker->sentence(6),
         ];
     }
 }
+
