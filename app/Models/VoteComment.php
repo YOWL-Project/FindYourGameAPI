@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserTopicSaved extends Model
+class VoteComment extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_topic_saveds';
+    protected $table = 'vote_comments';
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +17,8 @@ class UserTopicSaved extends Model
      * @var array
      */
     protected $fillable = [
-        'topic_id',
+        'comment_id',
         'user_id',
+        'vote',
     ];
 }
