@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\VoteTopicController;
 use App\Http\Controllers\VotePostController;
+use App\Http\Controllers\VoteCommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,4 +91,16 @@ Route::group(['prefix' => 'votesposts'], function () {
     // Route::get('{id}/edit', [VoteTopicController::class, 'edit']);
     // Route::put('{id}', [VoteTopicController::class, 'update']);
     Route::delete('{id}', [VotePostController::class, 'destroy']);
+});
+
+// routes votescomments
+Route::group(['prefix' => 'votescomments'], function () {
+    Route::get('/', [VoteCommentController::class, 'index']);
+    Route::get('/{page}/{limit}', [VoteCommentController::class, 'index']);
+    // Route::get('create', [VoteTopicController::class, 'create']);
+    Route::post('/', [VoteCommentController::class, 'store']);
+    Route::get('{id}', [VoteCommentController::class, 'show']);
+    // Route::get('{id}/edit', [VoteTopicController::class, 'edit']);
+    // Route::put('{id}', [VoteTopicController::class, 'update']);
+    Route::delete('{id}', [VoteCommentController::class, 'destroy']);
 });
