@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\CommentController; 
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +38,17 @@ Route::group(['prefix' => 'comments'], function () {
     Route::delete('{id}', [CommentController::class, 'destroy']);
     Route::post('/', [CommentController::class, 'store']);
     Route::put('{id}', [CommentController::class, 'update']);
+});
+
+
+// routes users
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/{page}/{limit}', [UserController::class, 'index']);
+    // Route::get('create', [UserController::class, 'create']);
+    // Route::post('/', [UserController::class, 'store']);
+    Route::get('{id}', [UserController::class, 'show']);
+    // Route::get('{id}/edit', [UserController::class, 'edit']);
+    Route::put('{id}', [UserController::class, 'update']);
+    Route::delete('{id}', [UserController::class, 'destroy']);
 });

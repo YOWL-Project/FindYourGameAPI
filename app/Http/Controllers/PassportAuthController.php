@@ -97,7 +97,7 @@ class PassportAuthController extends BaseController
 
         //check if input are valid and exist in database
 
-        if(!Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if(!Auth::attempt(['username' => $request->username, 'password' => $request->password])){
 
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 401);
 
