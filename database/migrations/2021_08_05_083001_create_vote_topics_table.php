@@ -15,7 +15,12 @@ class CreateVoteTopicsTable extends Migration
     {
         Schema::create('vote_topics', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('topic_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->tinyInteger('vote');
             $table->timestamps();
+            $table->foreign('topic_id')->references('id')->on('topics')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

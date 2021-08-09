@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(40)->create();
         \App\Models\Topic::factory(30)->create();
         \App\Models\Comment::factory(60)->create();
+        \App\Models\VoteTopic::factory(100)->create();
     }
 }
