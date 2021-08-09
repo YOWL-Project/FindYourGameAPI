@@ -15,7 +15,11 @@ class CreateVotePostsTable extends Migration
     {
         Schema::create('vote_posts', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('game_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->tinyInteger('vote');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

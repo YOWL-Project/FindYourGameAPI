@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\VoteTopic;
+use App\Models\VotePost;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 
-class VoteTopicController extends BaseController
+class VotePostController extends BaseController
 {
     public function index($page = 1, $limit = false)
     {
         $offset = ($page * $limit) - $limit;
-        $count = VoteTopic::all()->count();
+        $count = VotePost::all()->count();
         if ($limit == false) {
             $limit = $count;
         }
-        $votes = VoteTopic::all()->skip($offset)->take($limit);
+        $votes = VotePost::all()->skip($offset)->take($limit);
         $message = 'Request Get Vote index successfull.';
 
         return $this->sendResponse([
@@ -36,7 +36,7 @@ class VoteTopicController extends BaseController
         // make sure the request have all necessary input
 
         $validator = Validator::make($data, [
-            'topic_id' => 'required',
+            'game_id' => 'required',
 
             'user_id' => 'required',
 
@@ -55,7 +55,7 @@ class VoteTopicController extends BaseController
 
         // register new user in database
 
-        $vote = VoteTopic::create($data);
+        $vote = VotePost::create($data);
 
         $message = "Vote created !";
 
@@ -71,7 +71,7 @@ class VoteTopicController extends BaseController
     public function show($id)
     {
         try {
-            $vote = VoteTopic::findOrFail($id);
+            $vote = VotePost::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return $this->sendError('Vote not found', $e, 400);
         }
@@ -90,7 +90,7 @@ class VoteTopicController extends BaseController
 
     public function destroy($id)
     {
-        $vote = VoteTopic::find($id);
+        $vote = VotePost::find($id);
         $result = $vote->delete();
         if ($result) {
             $message = 'The Vote has been succesfully delete';
