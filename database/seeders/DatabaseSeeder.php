@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\VoteTopic::factory(100)->create();
         \App\Models\VotePost::factory(100)->create();
         \App\Models\VoteComment::factory(100)->create();
+        \App\Models\UserPostSaved::factory(100)->create();
+        \App\Models\UserTopicSaved::factory(100)->create();
     }
 }

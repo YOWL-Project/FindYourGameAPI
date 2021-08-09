@@ -10,6 +10,8 @@ use App\Http\Controllers\TopicController;
 use App\Http\Controllers\VoteTopicController;
 use App\Http\Controllers\VotePostController;
 use App\Http\Controllers\VoteCommentController;
+use App\Http\Controllers\UserTopicSavedController;
+use App\Http\Controllers\UserPostSavedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,4 +105,29 @@ Route::group(['prefix' => 'votescomments'], function () {
     // Route::get('{id}/edit', [VoteTopicController::class, 'edit']);
     // Route::put('{id}', [VoteTopicController::class, 'update']);
     Route::delete('{id}', [VoteCommentController::class, 'destroy']);
+});
+
+
+// routes usertopicssaved
+Route::group(['prefix' => 'topicssaved'], function () {
+    Route::get('/', [UserTopicSavedController::class, 'index']);
+    Route::get('/{page}/{limit}', [UserTopicSavedController::class, 'index']);
+    // Route::get('create', [VoteTopicController::class, 'create']);
+    Route::post('/', [UserTopicSavedController::class, 'store']);
+    Route::get('{id}', [UserTopicSavedController::class, 'show']);
+    // Route::get('{id}/edit', [VoteTopicController::class, 'edit']);
+    // Route::put('{id}', [VoteTopicController::class, 'update']);
+    Route::delete('{id}', [UserTopicSavedController::class, 'destroy']);
+});
+
+// routes usergamessaved
+Route::group(['prefix' => 'gamessaved'], function () {
+    Route::get('/', [UserPostSavedController::class, 'index']);
+    Route::get('/{page}/{limit}', [UserPostSavedController::class, 'index']);
+    // Route::get('create', [VoteTopicController::class, 'create']);
+    Route::post('/', [UserPostSavedController::class, 'store']);
+    Route::get('{id}', [UserPostSavedController::class, 'show']);
+    // Route::get('{id}/edit', [VoteTopicController::class, 'edit']);
+    // Route::put('{id}', [VoteTopicController::class, 'update']);
+    Route::delete('{id}', [UserPostSavedController::class, 'destroy']);
 });
