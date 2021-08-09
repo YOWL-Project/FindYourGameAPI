@@ -25,11 +25,13 @@ class PassportAuthController extends BaseController
 
         $validator = Validator::make($data, [
 
-            'name' => 'required|unique:users',
+            'username' => 'required|unique:users',
 
             'email' => 'required|email|unique:users',
 
             'password' => 'required|confirmed',
+
+            'birthdate' => 'required|date',
 
             'isadmin' => 'sometimes|boolean',
 
@@ -79,7 +81,7 @@ class PassportAuthController extends BaseController
 
         $validator = Validator::make($request->all(), [
 
-            'email' => 'required|email|exists:users',
+            'username' => 'required|exists:users',
 
             'password' => 'required',
 
@@ -123,15 +125,17 @@ class PassportAuthController extends BaseController
 
     {
 
-        if (!Auth::check()) {
-            return $this->sendError('User not Authenticated', ['error' => 'Not Authenticated'], 401);
-        }
+        // if (!Auth::check()) {
+        //     return $this->sendError('User not Authenticated', ['error' => 'Not Authenticated'], 401);
+        // }
 
-        $user = Auth::user();
+        $user = Auth::check();
 
-        $user->token()->revoke();
+        return $user;
 
-        return $this->sendResponse($user, "LOGOUT SUCCESFULLY !", 200);
+        // $user->token()->revoke();
+
+        // return $this->sendResponse($user, "LOGOUT SUCCESFULLY !", 200);
 
     }
 }
