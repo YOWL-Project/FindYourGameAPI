@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,15 @@ Route::post("logout", [PassportAuthController::class,'logout']);
 Route::get("tests",[TestController::class,'listTests']);
  
 Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');
+
+// routes users
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/{page}/{limit}', [UserController::class, 'index']);
+    // Route::get('create', [UserController::class, 'create']);
+    // Route::post('/', [UserController::class, 'store']);
+    Route::get('{id}', [UserController::class, 'show']);
+    // Route::get('{id}/edit', [UserController::class, 'edit']);
+    Route::put('{id}', [UserController::class, 'update']);
+    Route::delete('{id}', [UserController::class, 'destroy']);
+});
