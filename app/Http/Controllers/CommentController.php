@@ -9,7 +9,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 
-class CommentController extends Controller
+class CommentController extends BaseController
 {
 
     /**
@@ -34,15 +34,15 @@ class CommentController extends Controller
         $comment = Comment::findOrFail($id);
 
         if($comment) {
-            return response()->json($comment);
-            // $message = 'Comment successfully found';
-            // return $this->sendResponse([
-            //     'comment' => $comment,
-            // ], $message, 200);
+            //return response()->json($comment);
+            $message = 'Comment successfully found';
+            return $this->sendResponse([
+                'comment' => $comment,
+            ], $message, 200);
         }
         else {
-            //return $this->sendError('Comment not found', 404);
-            return response()->json(["status" => "error"]);
+            return $this->sendError('Comment not found', 404);
+            //return response()->json(["status" => "error"]);
         }        
     }
 
@@ -64,18 +64,20 @@ class CommentController extends Controller
                 'user_id' => 'required',
                 'content' => 'required'
             ]);
-        
-            Comment::create($validatedData);
 
-            // $message = 'Your comment have been posted';
-            // return $this->sendResponse([
-            // 'comment' => $comment,
-            // ], $message, 201);
-            return response()->json(["status" => "success"]);
+
+        
+            $comment = Comment::create($validatedData);
+
+            $message = 'Your comment have been posted';
+            return $this->sendResponse([
+            'comment' => $comment,
+            ], $message, 201);
+            //return response()->json(["status" => "success"]);
         }
         else {
-            // return $this->sendError('Something went wrong', 400);
-            return response()->json(["status" => "error"]);
+            return $this->sendError('Something went wrong', 400);
+            // return response()->json(["status" => "error"]);
         }
     }
 
@@ -97,19 +99,19 @@ class CommentController extends Controller
                 'content' => 'required'
             ]);
 
-            Comment::whereId($id)->update($validatedData);
+            $commentupdated = Comment::whereId($id)->update($validatedData);
 
-            // $message = 'Your comment have been updated';
-            // return $this->sendResponse([
-            // 'comment' => $commentupdated,
-            // ], $message, 201);
+            $message = 'Your comment have been updated';
+            return $this->sendResponse([
+            'comment' => $commentupdated,
+            ], $message, 201);
 
-            return response()->json(["status" => "success"]);
+            // return response()->json(["status" => "success"]);
 
         }
         else {
-            // return $this->sendError('Something went wrong', 400);
-            return response()->json(["status" => "error"]);
+            return $this->sendError('Something went wrong', 400);
+            // return response()->json(["status" => "error"]);
         }
     }
 
@@ -125,13 +127,13 @@ class CommentController extends Controller
         $comment = Comment::findOrFail($id);
         if($comment) {
             $comment->delete();
-            // $message = 'Comment successfully deleted';
-            // return $this->sendResponse($message, 200);
-            return response()->json(["status" => "success"]);
+            $message = 'Comment successfully deleted';
+            return $this->sendResponse($message, 200);
+            // return response()->json(["status" => "success"]);
         }
         else {
-            // return $this->sendError('Something went wrong', 400);
-            return response()->json(["status" => "error"]);
+            return $this->sendError('Something went wrong', 400);
+            // return response()->json(["status" => "error"]);
         }
     }
 }
