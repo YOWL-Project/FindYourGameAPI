@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PassportAuthController;
@@ -28,6 +29,8 @@ Route::post("login",[PassportAuthController::class,'login']);
 Route::post("logout", [PassportAuthController::class,'logout']);
 
 Route::get("tests",[TestController::class,'listTests']);
+
+Route::get("topics/votes/count", [DashboardController::class,'count_vote_topic']);
  
 Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');
 
