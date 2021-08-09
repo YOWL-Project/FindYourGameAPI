@@ -6,6 +6,7 @@ use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\CommentController; 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TopicController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,16 @@ Route::group(['prefix' => 'users'], function () {
     // Route::get('{id}/edit', [UserController::class, 'edit']);
     Route::put('{id}', [UserController::class, 'update']);
     Route::delete('{id}', [UserController::class, 'destroy']);
+});
+
+// routes topics
+Route::group(['prefix' => 'topics'], function () {
+    Route::get('/', [TopicController::class, 'index']);
+    Route::get('/{page}/{limit}', [TopicController::class, 'index']);
+    // Route::get('create', [UserController::class, 'create']);
+    Route::post('/', [TopicController::class, 'store']);
+    Route::get('{id}', [TopicController::class, 'show']);
+    // Route::get('{id}/edit', [UserController::class, 'edit']);
+    Route::put('{id}', [TopicController::class, 'update']);
+    Route::delete('{id}', [TopicController::class, 'destroy']);
 });
