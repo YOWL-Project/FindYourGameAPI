@@ -67,13 +67,13 @@ Route::group(['prefix' => 'topics'], function () {
 });
 
 // routes votestopics
-Route::group(['prefix' => 'votestopics'], function () {
-    Route::get('/', [VoteTopicController::class, 'index']);
-    Route::get('/{page}/{limit}', [VoteTopicController::class, 'index']);
-    Route::post('/', [VoteTopicController::class, 'store']);
-    Route::get('{id}', [VoteTopicController::class, 'show']);
-    Route::delete('{id}', [VoteTopicController::class, 'destroy']);
-});
+// Route::group(['prefix' => 'votestopics'], function () {
+//     Route::get('/', [VoteTopicController::class, 'index']);
+//     Route::get('/{page}/{limit}', [VoteTopicController::class, 'index']);
+//     Route::post('/', [VoteTopicController::class, 'store']);
+//     Route::get('{id}', [VoteTopicController::class, 'show']);
+//     Route::delete('{id}', [VoteTopicController::class, 'destroy']);
+// });
 
 // routes votesgames
 Route::group(['prefix' => 'votesgames'], function () {

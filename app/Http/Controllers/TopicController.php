@@ -11,11 +11,11 @@ class TopicController extends BaseController
 {
     public function index($page = 1, $limit = false)
     {
-        $offset = ($page * $limit) - $limit;
         $count = Topic::all()->count();
         if ($limit == false) {
             $limit = $count;
         }
+        $offset = ($page * $limit) - $limit;
         $topics = Topic::all()->skip($offset)->take($limit);
         $message = 'Request Get Topic index successfull.';
 
