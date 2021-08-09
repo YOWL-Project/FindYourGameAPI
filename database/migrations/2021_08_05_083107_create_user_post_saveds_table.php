@@ -15,6 +15,8 @@ class CreateUserPostSavedsTable extends Migration
     {
         Schema::create('user_post_saveds', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->integer('game_id');
             $table->timestamps();
         });
     }

@@ -15,6 +15,8 @@ class CreateUserTopicSavedsTable extends Migration
     {
         Schema::create('user_topic_saveds', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->integer('topic_id');
             $table->timestamps();
         });
     }
