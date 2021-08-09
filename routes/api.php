@@ -37,7 +37,7 @@ Route::group(['prefix' => 'users'], function () {
     // Route::get('create', [UserController::class, 'create']);
     // Route::post('/', [UserController::class, 'store']);
     Route::get('{id}', [UserController::class, 'show']);
-    Route::get('{id}/edit', [UserController::class, 'edit']);
+    // Route::get('{id}/edit', [UserController::class, 'edit']);
     Route::put('{id}', [UserController::class, 'update']);
     Route::delete('{id}', [UserController::class, 'destroy']);
 });
