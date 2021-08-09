@@ -25,7 +25,7 @@ class TopicFactory extends Factory
         return [
             'game_id' => random_int(0,500),
             'user_id' => User::all()->random()->id,
-            'title' => $this->faker->name(),
+            'title' => $this->faker->sentence(6),
         ];
     }
 }

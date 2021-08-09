@@ -26,7 +26,7 @@ class VoteTopicFactory extends Factory
         return [
             'topic_id' => Topic::all()->random()->id,
             'user_id' => User::all()->random()->id,
-            'vote' => $this->faker->random()->arrayElement([-1,1]),
+            'vote' => [-1, 1][array_rand([-1, 1])],
             'created_at' => $this->faker->dateTimeBetween('-31 days','now'),
         ];
     }
