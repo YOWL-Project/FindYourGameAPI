@@ -31,6 +31,7 @@ Route::get("tests",[TestController::class,'listTests']);
  
 Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');
 
+// routes users
 Route::group(['prefix' => 'users'], function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{page}/{limit}', [UserController::class, 'index']);
