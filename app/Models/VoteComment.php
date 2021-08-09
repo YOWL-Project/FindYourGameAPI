@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VotePost extends Model
+class VoteComment extends Model
 {
     use HasFactory;
 
-    protected $table = 'vote_posts';
+    protected $table = 'vote_comments';
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +17,7 @@ class VotePost extends Model
      * @var array
      */
     protected $fillable = [
-        'game_id',
+        'comment_id',
         'user_id',
         'vote',
     ];

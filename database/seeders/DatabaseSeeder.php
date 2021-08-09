@@ -14,8 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Vote::factory(20)->create();
-
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(40)->create();
+        \App\Models\Topic::factory(30)->create();
+        \App\Models\Comment::factory(60)->create();
+        \App\Models\VoteTopic::factory(100)->create();
+        \App\Models\VotePost::factory(100)->create();
+        \App\Models\VoteComment::factory(100)->create();
     }
 }

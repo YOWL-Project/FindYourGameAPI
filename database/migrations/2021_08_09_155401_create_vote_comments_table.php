@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVotePostsTable extends Migration
+class CreateVoteCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateVotePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('vote_posts', function (Blueprint $table) {
+        Schema::create('vote_comments', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('game_id')->unsigned();
+            $table->bigInteger('comment_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
             $table->tinyInteger('vote');
             $table->timestamps();
+            $table->foreign('comment_id')->references('id')->on('comments')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -30,6 +31,6 @@ class CreateVotePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vote_posts');
+        Schema::dropIfExists('vote_comments');
     }
 }
