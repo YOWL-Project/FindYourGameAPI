@@ -9,7 +9,9 @@ class VoteController extends Controller
 {
     public function index(Request $request)
     {
-        $votes = Vote::get();
+        $votes = Vote::orderBy('vote_date', 'asc')->get();
         return response()->json($votes);
     }
 }
+
+
