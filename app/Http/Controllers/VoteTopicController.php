@@ -11,12 +11,14 @@ class VoteTopicController extends BaseController
 {
     public function index($page = 1, $limit = false)
     {
-        $offset = ($page * $limit) - $limit;
+        
         $count = VoteTopic::all()->count();
         if ($limit == false) {
             $limit = $count;
         }
-        $votes = VoteTopic::all()->skip($offset)->take($limit);
+        // $offset = ($page * $limit) - $limit;
+        
+        $votes = VoteTopic::all()->skip(10)->take($limit);
         $message = 'Request Get Vote index successfull.';
 
         return $this->sendResponse([

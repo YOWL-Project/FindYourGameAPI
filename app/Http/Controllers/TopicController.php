@@ -11,12 +11,13 @@ class TopicController extends BaseController
 {
     public function index($page = 1, $limit = false)
     {
-        $offset = ($page * $limit) - $limit;
+
         $count = Topic::all()->count();
         if ($limit == false) {
             $limit = $count;
         }
-        $topics = Topic::all()->skip($offset)->take($limit);
+        // $offset = ($page * $limit) - $limit;
+        $topics = Topic::all()->skip(10)->take($limit);
         $message = 'Request Get Topic index successfull.';
 
         return $this->sendResponse([
@@ -29,7 +30,8 @@ class TopicController extends BaseController
     // public function create() {
 
     // }
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $data = $request->all();
 
@@ -44,17 +46,16 @@ class TopicController extends BaseController
 
         ]);
 
-   
+
 
         //send error with bad request status if validator fail
 
-        if($validator->fails()){
+        if ($validator->fails()) {
 
-            return $this->sendError('Validation Error.', $validator->errors(), 400);       
-
+            return $this->sendError('Validation Error.', $validator->errors(), 400);
         }
 
-   
+
 
         // register new user in database
 
@@ -62,15 +63,14 @@ class TopicController extends BaseController
 
         $message = "Topic created !";
 
-   
 
-        return $this->sendResponse($topic,$message, 201);
 
+        return $this->sendResponse($topic, $message, 201);
     }
 
-   
 
-    
+
+
     public function show($id)
     {
         try {

@@ -13,11 +13,12 @@ class UserController extends BaseController
 {
     public function index($page = 1, $limit = false)
     {
-        $offset = ($page * $limit) - $limit;
+        
         $count = User::all()->count();
         if ($limit == false) {
             $limit = $count;
         }
+        $offset = ($page * $limit) - $limit;
         $users = User::all()->skip($offset)->take($limit);
         $message = 'Request Get User index successfull.';
 
