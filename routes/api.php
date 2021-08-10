@@ -4,11 +4,11 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PassportAuthController;
-use App\Http\Controllers\TestController;
+// use App\Http\Controllers\TestController;
 use App\Http\Controllers\CommentController; 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TopicController;
-use App\Http\Controllers\VoteTopicController;
+// use App\Http\Controllers\VoteTopicController;
 use App\Http\Controllers\VotePostController;
 use App\Http\Controllers\VoteCommentController;
 use App\Http\Controllers\UserTopicSavedController;
@@ -39,11 +39,9 @@ Route::post("login",[PassportAuthController::class,'login']);
 
 Route::post("logout", [PassportAuthController::class,'logout']);
 
-Route::get("tests",[TestController::class,'listTests']);
-
-Route::get("topics/votes/count", [DashboardController::class,'count_vote_topic']);
+// Route::get("tests",[TestController::class,'listTests']);
  
-Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');
+// Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');
 
 Route::group(['prefix' => 'comments'], function () {
     Route::get('/', [CommentController::class, 'index']);
@@ -57,10 +55,11 @@ Route::group(['prefix' => 'comments'], function () {
 Route::get("conversion", [DasboardController::class, 'conversion']);
 
 Route::group(['prefix' => 'count'], function () {
-    Route::get("/visits/{duration}", [DasboardController::class, 'count_visit']);
-    Route::get("/inscriptions/{duration}", [DasboardController::class, 'count_inscription']);
-    // Route::get("/comments/{duration}", [DasboardController::class, 'count_inscription']);
-    // Route::get("/games", [DasboardController::class, 'count_inscription']);
+    Route::get("/visits/{duration}", [DashboardController::class, 'count_visits']);
+    Route::get("/inscriptions/{duration}", [DashboardController::class, 'count_inscriptions']);
+    Route::get("/comments/{duration}", [DashboardController::class, 'count_comments']);
+    Route::get("/games/{number}", [DashboardController::class, 'count_games_popularity']);
+    Route::get("/votes/topics", [DashboardController::class,'count_votes_topics']);
 });
 
 

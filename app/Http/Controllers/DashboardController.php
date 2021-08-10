@@ -8,6 +8,8 @@ use App\Models\VoteTopic;
 use App\Models\Visit;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\VotePost;
+use App\Models\VoteComment;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
@@ -34,7 +36,7 @@ class DashboardController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function count_visit($duration)
+    public function count_visits($duration)
     {
 
         if ($duration == 'day') {
@@ -114,7 +116,7 @@ class DashboardController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function count_inscription($duration)
+    public function count_inscriptions($duration)
     {
         if ($duration == 'day') {
             $date = Carbon::now()->format('Y-m-d');
@@ -236,16 +238,41 @@ class DashboardController extends BaseController
         }
     }
 
-    // /**
-    //  * count number of games most popular base on number of votes
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
+    /**
+     * count number of games most popular base on number of votes
+     *
+     * @return \Illuminate\Http\Response
+     */
 
-    // public function count_games_popularity($number)
-    // {
-    //     $count_vote = 
-    // }
+    public function count_games_popularity($number)
+    {
+
+        $count_votes = VotePost::groupBy('game_id')->select('game_id', VotePost::raw('count(*) as count'))->orderBy('count', 'desc')->take($number)->get();
+
+        $sum_votes = VotePost::groupBy('game_id')->select('game_id', VotePost::raw('sum(vote) as sum'))->orderBy('sum', 'desc')->take($number)->get();
+
+        $data = ['count' => $count_votes, 'sum' => $sum_votes];
+
+        return $this->sendResponse($data, 'count and sum of games votes', 200);
+    }
+
+    /**
+     * count number of comments most popular base on number of votes
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function count_comments_popularity($number)
+    {
+
+        $count_votes = VoteComment::groupBy('game_id')->select('game_id', VotePost::raw('count(*) as count'))->orderBy('count', 'desc')->take($number)->get();
+
+        $sum_votes = VoteComment::groupBy('game_id')->select('game_id', VotePost::raw('sum(vote) as sum'))->orderBy('sum', 'desc')->take($number)->get();
+
+        $data = ['count' => $count_votes, 'sum' => $sum_votes];
+
+        return $this->sendResponse($data, 'count and sum of games votes', 200);
+    }
 
     /**
      * count number vote on topics
@@ -253,7 +280,7 @@ class DashboardController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function count_vote_topic($topic)
+    public function count_votes_topics($topic)
     {
         if ($topic == 'all') {
 
