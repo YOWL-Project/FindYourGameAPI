@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Vote;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +19,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\VoteTopic::factory(100)->create();
         \App\Models\VotePost::factory(100)->create();
         \App\Models\VoteComment::factory(100)->create();
+        \App\Models\UserPostSaved::factory(100)->create();
+        \App\Models\UserTopicSaved::factory(100)->create();
+        \App\Models\Visit::factory(300)->create();
     }
 }

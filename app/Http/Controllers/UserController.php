@@ -13,7 +13,6 @@ class UserController extends BaseController
 {
     public function index($page = 1, $limit = false)
     {
-        
         $count = User::all()->count();
         if ($limit == false) {
             $limit = $count;

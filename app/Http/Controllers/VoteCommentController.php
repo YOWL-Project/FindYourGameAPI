@@ -16,7 +16,6 @@ class VoteCommentController extends BaseController
             $limit = $count;
         }
         $offset = ($page * $limit) - $limit;
-
         $votes = VoteComment::all()->skip($offset)->take($limit);
         $message = 'Request Get Vote index successfull.';
 

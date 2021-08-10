@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\VotePost;
+use App\Models\UserTopicSaved;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 
-class VotePostController extends BaseController
+class UserTopicSavedController extends BaseController
 {
     public function index($page = 1, $limit = false)
     {
-        $count = VotePost::all()->count();
+        $count = UserTopicSaved::all()->count();
         if ($limit == false) {
             $limit = $count;
         }
         $offset = ($page * $limit) - $limit;
-        $votes = VotePost::all()->skip($offset)->take($limit);
-        $message = 'Request Get Vote index successfull.';
+        $topics_saved = UserTopicSaved::all()->skip($offset)->take($limit);
+        $message = 'Request Get Topics saved index successfull.';
 
         return $this->sendResponse([
-            'votes' => $votes,
+            'topics_saved' => $topics_saved,
             'count' => $count,
             'limit' => $limit,
             'page' => $page,
@@ -36,11 +36,9 @@ class VotePostController extends BaseController
         // make sure the request have all necessary input
 
         $validator = Validator::make($data, [
-            'game_id' => 'required',
+            'topic_id' => 'required',
 
             'user_id' => 'required',
-
-            'vote' => 'required|integer|between:-1,1|not_in:0',
         ]);
 
         //send error with bad request status if validator fail
@@ -55,13 +53,13 @@ class VotePostController extends BaseController
 
         // register new user in database
 
-        $vote = VotePost::create($data);
+        $topic_saved = UserTopicSaved::create($data);
 
-        $message = "Vote created !";
+        $message = "Topic saved created !";
 
    
 
-        return $this->sendResponse($vote,$message, 201);
+        return $this->sendResponse($topic_saved,$message, 201);
 
     }
 
@@ -71,14 +69,14 @@ class VotePostController extends BaseController
     public function show($id)
     {
         try {
-            $vote = VotePost::findOrFail($id);
+            $topic_saved = UserTopicSaved::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return $this->sendError('Vote not found', $e, 400);
+            return $this->sendError('Topic saved not found', $e, 400);
         }
 
-        $message = 'Vote successfully found';
+        $message = 'Topic saved successfully found';
         return $this->sendResponse([
-            'vote' => $vote,
+            'topic_saved' => $topic_saved,
         ], $message, 201);
     }
     // public function edit($id) {
@@ -90,13 +88,13 @@ class VotePostController extends BaseController
 
     public function destroy($id)
     {
-        $vote = VotePost::find($id);
-        $result = $vote->delete();
+        $topic_saved = UserTopicSaved::find($id);
+        $result = $topic_saved->delete();
         if ($result) {
-            $message = 'The Vote has been succesfully delete';
+            $message = 'The Topic saved has been succesfully delete';
         } else {
-            $message = 'We have encounter an error in the deleting of the Vote';
+            $message = 'We have encounter an error in the deleting of the Topic saved';
         }
-        return $this->sendResponse($vote, $message, 201);
+        return $this->sendResponse($topic_saved, $message, 201);
     }
 }

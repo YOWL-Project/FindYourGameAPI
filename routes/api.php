@@ -1,15 +1,18 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PassportAuthController;
-use App\Http\Controllers\TestController;
+// use App\Http\Controllers\TestController;
 use App\Http\Controllers\CommentController; 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TopicController;
-use App\Http\Controllers\VoteTopicController;
+// use App\Http\Controllers\VoteTopicController;
 use App\Http\Controllers\VotePostController;
 use App\Http\Controllers\VoteCommentController;
+use App\Http\Controllers\UserTopicSavedController;
+use App\Http\Controllers\UserPostSavedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,15 +29,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post("visit", [DashboardController::class, 'add_visit']);
+
+
+
 Route::post("register",[PassportAuthController::class,'register']);
 
 Route::post("login",[PassportAuthController::class,'login']);
 
 Route::post("logout", [PassportAuthController::class,'logout']);
 
-Route::get("tests",[TestController::class,'listTests']);
+// Route::get("tests",[TestController::class,'listTests']);
  
-Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');
+// Route::post("test",[TestController::class,'addTest'])->middleware('auth:api');
 
 Route::group(['prefix' => 'comments'], function () {
     Route::get('/', [CommentController::class, 'index']);
@@ -44,15 +51,23 @@ Route::group(['prefix' => 'comments'], function () {
     Route::put('{id}', [CommentController::class, 'update']);
 });
 
+//route dasboard
+Route::get("conversion", [DasboardController::class, 'conversion']);
+
+Route::group(['prefix' => 'count'], function () {
+    Route::get("/visits/{duration}", [DashboardController::class, 'count_visits']);
+    Route::get("/inscriptions/{duration}", [DashboardController::class, 'count_inscriptions']);
+    Route::get("/comments/{duration}", [DashboardController::class, 'count_comments']);
+    Route::get("/games/{number}", [DashboardController::class, 'count_games_popularity']);
+    Route::get("/votes/topics", [DashboardController::class,'count_votes_topics']);
+});
+
 
 // routes users
 Route::group(['prefix' => 'users'], function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{page}/{limit}', [UserController::class, 'index']);
-    // Route::get('create', [UserController::class, 'create']);
-    // Route::post('/', [UserController::class, 'store']);
     Route::get('{id}', [UserController::class, 'show']);
-    // Route::get('{id}/edit', [UserController::class, 'edit']);
     Route::put('{id}', [UserController::class, 'update']);
     Route::delete('{id}', [UserController::class, 'destroy']);
 });
@@ -61,35 +76,27 @@ Route::group(['prefix' => 'users'], function () {
 Route::group(['prefix' => 'topics'], function () {
     Route::get('/', [TopicController::class, 'index']);
     Route::get('/{page}/{limit}', [TopicController::class, 'index']);
-    // Route::get('create', [UserController::class, 'create']);
     Route::post('/', [TopicController::class, 'store']);
     Route::get('{id}', [TopicController::class, 'show']);
-    // Route::get('{id}/edit', [UserController::class, 'edit']);
     Route::put('{id}', [TopicController::class, 'update']);
     Route::delete('{id}', [TopicController::class, 'destroy']);
 });
 
 // routes votestopics
-Route::group(['prefix' => 'votestopics'], function () {
-    Route::get('/', [VoteTopicController::class, 'index']);
-    Route::get('/{page}/{limit}', [VoteTopicController::class, 'index']);
-    // Route::get('create', [VoteTopicController::class, 'create']);
-    Route::post('/', [VoteTopicController::class, 'store']);
-    Route::get('{id}', [VoteTopicController::class, 'show']);
-    // Route::get('{id}/edit', [VoteTopicController::class, 'edit']);
-    // Route::put('{id}', [VoteTopicController::class, 'update']);
-    Route::delete('{id}', [VoteTopicController::class, 'destroy']);
-});
+// Route::group(['prefix' => 'votestopics'], function () {
+//     Route::get('/', [VoteTopicController::class, 'index']);
+//     Route::get('/{page}/{limit}', [VoteTopicController::class, 'index']);
+//     Route::post('/', [VoteTopicController::class, 'store']);
+//     Route::get('{id}', [VoteTopicController::class, 'show']);
+//     Route::delete('{id}', [VoteTopicController::class, 'destroy']);
+// });
 
-// routes votesposts
-Route::group(['prefix' => 'votesposts'], function () {
+// routes votesgames
+Route::group(['prefix' => 'votesgames'], function () {
     Route::get('/', [VotePostController::class, 'index']);
     Route::get('/{page}/{limit}', [VotePostController::class, 'index']);
-    // Route::get('create', [VoteTopicController::class, 'create']);
     Route::post('/', [VotePostController::class, 'store']);
     Route::get('{id}', [VotePostController::class, 'show']);
-    // Route::get('{id}/edit', [VoteTopicController::class, 'edit']);
-    // Route::put('{id}', [VoteTopicController::class, 'update']);
     Route::delete('{id}', [VotePostController::class, 'destroy']);
 });
 
@@ -97,10 +104,26 @@ Route::group(['prefix' => 'votesposts'], function () {
 Route::group(['prefix' => 'votescomments'], function () {
     Route::get('/', [VoteCommentController::class, 'index']);
     Route::get('/{page}/{limit}', [VoteCommentController::class, 'index']);
-    // Route::get('create', [VoteTopicController::class, 'create']);
     Route::post('/', [VoteCommentController::class, 'store']);
     Route::get('{id}', [VoteCommentController::class, 'show']);
-    // Route::get('{id}/edit', [VoteTopicController::class, 'edit']);
-    // Route::put('{id}', [VoteTopicController::class, 'update']);
     Route::delete('{id}', [VoteCommentController::class, 'destroy']);
+});
+
+
+// routes usertopicssaved
+Route::group(['prefix' => 'topicssaved'], function () {
+    Route::get('/', [UserTopicSavedController::class, 'index']);
+    Route::get('/{page}/{limit}', [UserTopicSavedController::class, 'index']);
+    Route::post('/', [UserTopicSavedController::class, 'store']);
+    Route::get('{id}', [UserTopicSavedController::class, 'show']);
+    Route::delete('{id}', [UserTopicSavedController::class, 'destroy']);
+});
+
+// routes usergamessaved
+Route::group(['prefix' => 'gamessaved'], function () {
+    Route::get('/', [UserPostSavedController::class, 'index']);
+    Route::get('/{page}/{limit}', [UserPostSavedController::class, 'index']);
+    Route::post('/', [UserPostSavedController::class, 'store']);
+    Route::get('{id}', [UserPostSavedController::class, 'show']);
+    Route::delete('{id}', [UserPostSavedController::class, 'destroy']);
 });

@@ -15,7 +15,11 @@ class CreateUserTopicSavedsTable extends Migration
     {
         Schema::create('user_topic_saveds', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('topic_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
+            $table->foreign('topic_id')->references('id')->on('topics')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
