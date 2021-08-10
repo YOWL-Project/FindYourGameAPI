@@ -41,7 +41,7 @@ class DashboardController extends BaseController
 
         if ($duration == 'day') {
             $date = Carbon::now()->format('Y-m-d');
-            $count = Visit::where('create_at', 'LIKE', "$date%")->count();
+            $count = Visit::where('created_at', 'LIKE', "$date%")->count();
 
             return $this->sendResponse($count, 'count visitor of the day', 200);
         } elseif ($duration == 'week') {
@@ -110,7 +110,7 @@ class DashboardController extends BaseController
         return $this->sendResponse($conversion, "rate of conversion", 200);
     }
 
-     /**
+    /**
      * count number inscriptions
      *
      * @return \Illuminate\Http\Response
@@ -120,7 +120,7 @@ class DashboardController extends BaseController
     {
         if ($duration == 'day') {
             $date = Carbon::now()->format('Y-m-d');
-            $count = User::where('create_at', 'LIKE', "$date%")->count();
+            $count = User::where('created_at', 'LIKE', "$date%")->count();
 
             return $this->sendResponse($count, 'count visitor of the day', 200);
         } elseif ($duration == 'week') {
@@ -184,7 +184,7 @@ class DashboardController extends BaseController
     {
         if ($duration == 'day') {
             $date = Carbon::now()->format('Y-m-d');
-            $count = Comment::where('create_at', 'LIKE', "$date%")->count();
+            $count = Comment::where('created_at', 'LIKE', "$date%")->count();
 
             return $this->sendResponse($count, 'count visitor of the day', 200);
         } elseif ($duration == 'week') {
@@ -246,14 +246,39 @@ class DashboardController extends BaseController
 
     public function count_games_popularity($number)
     {
+        if (is_numeric($number)) {
 
-        $count_votes = VotePost::groupBy('game_id')->select('game_id', VotePost::raw('count(*) as count'))->orderBy('count', 'desc')->take($number)->get();
+            $count_votes = VotePost::groupBy('game_id')->select('game_id', VotePost::raw('count(*) as count'))->orderBy('count', 'desc')->take($number)->get();
 
-        $sum_votes = VotePost::groupBy('game_id')->select('game_id', VotePost::raw('sum(vote) as sum'))->orderBy('sum', 'desc')->take($number)->get();
+            $sum_votes = VotePost::groupBy('game_id')->select('game_id', VotePost::raw('sum(vote) as sum'))->orderBy('sum', 'desc')->take($number)->get();
 
-        $data = ['count' => $count_votes, 'sum' => $sum_votes];
+            $data = ['count' => $count_votes, 'sum' => $sum_votes];
 
-        return $this->sendResponse($data, 'count and sum of games votes', 200);
+            return $this->sendResponse($data, 'count and sum of games votes', 200);
+        } elseif ($number == 'all') {
+
+            $labels = [];
+            $data = [];
+            $start = Carbon::now()->subMonth()->format('Y-m-d H:m:s');
+            $end = Carbon::now()->format('Y-m-d H:m:s');
+
+            $period = CarbonPeriod::create($start, '1 day', $end);
+            foreach ($period as $date) {
+                $date_format = $date->format('Y-m-d');
+                $count_vote = VotePost::where('created_at', 'LIKE', "$date_format%")->count();
+                array_push($data, $count_vote);
+                array_push($labels, $date->format('D'));
+            }
+
+            $chartData = ['labels' => $labels, 'data' => $data];
+
+
+            return $this->sendResponse($chartData, "count vote topic during the last month", 200);
+        } elseif (is_array($number)) {
+            $count_votes = VotePost::where('game_id', '=', "" + $number['id'])->count();
+
+            return $this->sendResponse($count_votes, "count numbers of vote for " + $number['id'], 200);
+        }
     }
 
     /**
@@ -264,14 +289,39 @@ class DashboardController extends BaseController
 
     public function count_comments_popularity($number)
     {
+        if (is_numeric($number)) {
 
-        $count_votes = VoteComment::groupBy('game_id')->select('game_id', VotePost::raw('count(*) as count'))->orderBy('count', 'desc')->take($number)->get();
+            $count_votes = VoteComment::groupBy('comment_id')->select('comment_id', VoteComment::raw('count(*) as count'))->orderBy('count', 'desc')->take($number)->get();
 
-        $sum_votes = VoteComment::groupBy('game_id')->select('game_id', VotePost::raw('sum(vote) as sum'))->orderBy('sum', 'desc')->take($number)->get();
+            $sum_votes = VoteComment::groupBy('comment_id')->select('comment_id', VoteComment::raw('sum(vote) as sum'))->orderBy('sum', 'desc')->take($number)->get();
 
-        $data = ['count' => $count_votes, 'sum' => $sum_votes];
+            $data = ['count' => $count_votes, 'sum' => $sum_votes];
 
-        return $this->sendResponse($data, 'count and sum of games votes', 200);
+            return $this->sendResponse($data, 'count and sum of games votes', 200);
+        } elseif ($number == 'all') {
+
+            $labels = [];
+            $data = [];
+            $start = Carbon::now()->subMonth()->format('Y-m-d H:m:s');
+            $end = Carbon::now()->format('Y-m-d H:m:s');
+
+            $period = CarbonPeriod::create($start, '1 day', $end);
+            foreach ($period as $date) {
+                $date_format = $date->format('Y-m-d');
+                $count_vote = VoteComment::where('created_at', 'LIKE', "$date_format%")->count();
+                array_push($data, $count_vote);
+                array_push($labels, $date->format('D'));
+            }
+
+            $chartData = ['labels' => $labels, 'data' => $data];
+
+
+            return $this->sendResponse($chartData, "count vote topic during the last month", 200);
+        } elseif (is_array($number)) {
+            $count_vote = VoteComment::where('comment_id', '=', "" + $number['id'])->count();
+
+            return $this->sendResponse($count_vote, "count numbers of vote for " + $number['id'], 200);
+        }
     }
 
     /**
@@ -280,9 +330,18 @@ class DashboardController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function count_votes_topics($topic)
+    public function count_topics_popularity($number)
     {
-        if ($topic == 'all') {
+        if (is_numeric($number)) {
+
+            $count_votes = VoteTopic::groupBy('topic_id')->select('topic_id', VoteTopic::raw('count(*) as count'))->orderBy('count', 'desc')->take($number)->get();
+
+            $sum_votes = VoteTopic::groupBy('topic_id')->select('topic_id', VoteTopic::raw('sum(vote) as sum'))->orderBy('sum', 'desc')->take($number)->get();
+
+            $data = ['count' => $count_votes, 'sum' => $sum_votes];
+
+            return $this->sendResponse($data, 'count and sum of games votes', 200);
+        } elseif ($number == 'all') {
 
             $labels = [];
             $data = [];
@@ -301,10 +360,10 @@ class DashboardController extends BaseController
 
 
             return $this->sendResponse($chartData, "count vote topic during the last month", 200);
-        } else {
-            $count_vote = VoteTopic::where('title', '=', "$topic")->count();
+        } elseif (is_array($number)) {
+            $count_vote = VoteTopic::where('title', '=', "" + $number['id'])->count();
 
-            return $this->sendResponse($count_vote, "count numbers of vote for $topic", 200);
+            return $this->sendResponse($count_vote, "count numbers of vote for " + $number['id'], 200);
         }
     }
 }

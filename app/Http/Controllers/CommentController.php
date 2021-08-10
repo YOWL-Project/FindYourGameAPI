@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\User;
 use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -18,8 +19,13 @@ class CommentController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function index () {
+    public function index()
+    {
         $comments = Comment::all();
+        foreach ($comments as $comment) {
+            $user = User::findOrFail($comment->user_id);
+            $comment['username'] = $user->username;
+        }
         return response()->json($comments);
     }
 
@@ -30,20 +36,22 @@ class CommentController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function show ($id) {
+    public function show($id)
+    {
         $comment = Comment::findOrFail($id);
+        $user = User::findOrFail($comment->user_id);
+        $comment['username'] = $user->username;
 
-        if($comment) {
+        if ($comment) {
             //return response()->json($comment);
             $message = 'Comment successfully found';
             return $this->sendResponse([
                 'comment' => $comment,
             ], $message, 200);
-        }
-        else {
+        } else {
             return $this->sendError('Comment not found', 404);
             //return response()->json(["status" => "error"]);
-        }        
+        }
     }
 
 
@@ -54,11 +62,12 @@ class CommentController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function store (Request $request) {
+    public function store(Request $request)
+    {
         $content = $request->input('content');
         //$user = (lier le commentaire crée à l'user)
 
-        if($content) {
+        if ($content) {
             $validatedData = $request->validate([
                 'topic_id' => 'required',
                 'user_id' => 'required',
@@ -66,16 +75,15 @@ class CommentController extends BaseController
             ]);
 
 
-        
+
             $comment = Comment::create($validatedData);
 
             $message = 'Your comment have been posted';
             return $this->sendResponse([
-            'comment' => $comment,
+                'comment' => $comment,
             ], $message, 201);
             //return response()->json(["status" => "success"]);
-        }
-        else {
+        } else {
             return $this->sendError('Something went wrong', 400);
             // return response()->json(["status" => "error"]);
         }
@@ -88,8 +96,9 @@ class CommentController extends BaseController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-     
-    public function update (Request $request, $id) {
+
+    public function update(Request $request, $id)
+    {
         $comment = Comment::findOrFail($id);
 
         if ($comment) {
@@ -103,13 +112,12 @@ class CommentController extends BaseController
 
             $message = 'Your comment have been updated';
             return $this->sendResponse([
-            'comment' => $commentupdated,
+                'comment' => $commentupdated,
             ], $message, 201);
 
             // return response()->json(["status" => "success"]);
 
-        }
-        else {
+        } else {
             return $this->sendError('Something went wrong', 400);
             // return response()->json(["status" => "error"]);
         }
@@ -123,15 +131,15 @@ class CommentController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function destroy ($id) {
+    public function destroy($id)
+    {
         $comment = Comment::findOrFail($id);
-        if($comment) {
+        if ($comment) {
             $comment->delete();
             $message = 'Comment successfully deleted';
             return $this->sendResponse($message, 200);
             // return response()->json(["status" => "success"]);
-        }
-        else {
+        } else {
             return $this->sendError('Something went wrong', 400);
             // return response()->json(["status" => "error"]);
         }

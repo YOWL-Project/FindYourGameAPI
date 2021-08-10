@@ -26,6 +26,7 @@ class TopicFactory extends Factory
             'game_id' => random_int(0,500),
             'user_id' => User::all()->random()->id,
             'title' => $this->faker->sentence(6),
+            'created_at' => $this->faker->dateTimeBetween('-31 days','now'),
         ];
     }
 }

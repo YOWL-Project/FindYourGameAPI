@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,6 +18,12 @@ class TopicController extends BaseController
         }
         $offset = ($page * $limit) - $limit;
         $topics = Topic::all()->skip($offset)->take($limit);
+
+        foreach ($topics as $topic) {
+            $user = User::findOrFail($topic->user_id);
+            $topic['username'] = $user->username;
+        }
+
         $message = 'Request Get Topic index successfull.';
 
         return $this->sendResponse([
@@ -75,6 +82,8 @@ class TopicController extends BaseController
     {
         try {
             $topic = Topic::findOrFail($id);
+            $user = User::findOrFail($topic->user_id);
+            $topic['username'] = $user->username;
         } catch (ModelNotFoundException $e) {
             return $this->sendError('Topic not found', $e, 400);
         }

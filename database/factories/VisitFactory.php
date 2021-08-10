@@ -22,8 +22,7 @@ class VisitFactory extends Factory
     public function definition()
     {
         return [
-            'count' => 1,
-            'create_at' => $this->faker->dateTimeBetween('-31 days','now'),
+            'created_at' => $this->faker->dateTimeBetween('-31 days','now'),
         ];
     }
 }

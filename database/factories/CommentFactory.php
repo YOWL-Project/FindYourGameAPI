@@ -27,7 +27,7 @@ class CommentFactory extends Factory
             'topic_id' => Topic::all()->random()->id,
             'user_id' => User::all()->random()->id,
             'content' => $this->faker->text,
-            'created_at' => now(),
+            'created_at' => $this->faker->dateTimeBetween('-31 days','now'),
         ];
     }
 }

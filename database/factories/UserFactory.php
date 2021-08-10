@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'birthdate' => $this->faker->dateTimeBetween($startDate = '-13 years', $endDate = 'now', $timezone = null, $format = 'Y-m-d'),
             'isadmin' => random_int(0, 1),
             'remember_token' => Str::random(10),
+            'created_at' => $this->faker->dateTimeBetween('-31 days','now'),
         ];
     }
 
