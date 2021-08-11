@@ -80,8 +80,6 @@ class UserController extends BaseController
 
             'email' => 'required|email',
 
-            'password' => 'required',
-
             'birthdate' => 'required|date',
 
             'isadmin' => 'sometimes|boolean',
@@ -97,13 +95,11 @@ class UserController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors(), 400);
         }
 
-        $data['password'] = bcrypt($data['password']);
 
         // update user
 
         $user->username = $data['username'];
         $user->email = $data['email'];
-        $user->password = $data['password'];
         $user->birthdate = $data['birthdate'];
         $user->isadmin = $data['isadmin'];
         $result = $user->save();
