@@ -68,6 +68,7 @@ Route::group(['prefix' => 'topicssaved'], function () {
 // routes usergamessaved
 Route::group(['prefix' => 'gamessaved'], function () {
     Route::get('/', [UserPostSavedController::class, 'index']);
+    Route::get('/getgamessaved/{user_id}', [UserPostSavedController::class, 'getgamessaved']);
     Route::get('/{page}/{limit}', [UserPostSavedController::class, 'index']);
     Route::get('{id}', [UserPostSavedController::class, 'show']);
 });

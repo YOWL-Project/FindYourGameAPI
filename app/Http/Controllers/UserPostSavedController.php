@@ -26,6 +26,16 @@ class UserPostSavedController extends BaseController
             'page' => $page,
         ], $message, 201);
     }
+
+    public function getgamessaved($user_id)
+    {
+        $games_saved = UserPostSaved::where('user_id',"=", "$user_id")->get();
+        $message = 'Request Get Games saved index successfull.';
+
+        return $this->sendResponse([
+            'games_saved' => $games_saved,
+        ], $message, 201);
+    }
     // public function create() {
 
     // }
