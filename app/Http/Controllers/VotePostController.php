@@ -84,9 +84,43 @@ class VotePostController extends BaseController
     // public function edit($id) {
 
     // }
-    // public function update(Request $request, $id)
-    // {
-    // }
+    public function update(Request $request, $id)
+    {
+
+        $vote = VotePost::find($id);
+        $data = $request->all();
+        // make sure the request have all necessary input
+
+        $validator = Validator::make($data, [
+            'game_id' => 'required',
+
+            'user_id' => 'required',
+
+            'vote' => 'required|integer|between:-1,1|not_in:0',
+        ]);
+
+        //send error with bad request status if validator fail
+
+        if ($validator->fails()) {
+
+            return $this->sendError('Validation Error.', $validator->errors(), 400);
+        }
+
+        // update topic
+
+        $vote->game_id = $data['game_id'];
+        $vote->user_id = $data['user_id'];
+        $result = $vote->save();
+
+        if ($result) {
+            $message = 'The Vote has been succesfully updated';
+        } else {
+            $message = 'We have encounter an error in the updating of the Vote';
+        }
+
+        return $this->sendResponse($vote, $message, 201);
+
+    }
 
     public function destroy($id)
     {

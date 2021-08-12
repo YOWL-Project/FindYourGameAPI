@@ -99,6 +99,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(['prefix' => 'votesgames'], function () {
         Route::post('/', [VotePostController::class, 'store']);
         Route::delete('{id}', [VotePostController::class, 'destroy']);
+        Route::put('{id}', [VotePostController::class, 'update']);
     });
 
     // routes votescomments
