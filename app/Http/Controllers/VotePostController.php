@@ -110,6 +110,7 @@ class VotePostController extends BaseController
 
         $vote->game_id = $data['game_id'];
         $vote->user_id = $data['user_id'];
+        $vote->vote = $data['vote'];
         $result = $vote->save();
 
         if ($result) {
