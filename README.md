@@ -1,4 +1,36 @@
-# PFF_BLASS_BACK
+# FindYourGame
+Developing a solution from client needs.  
+Back usign :  
+
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+
+<p align="center">
+<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
+
+# Our Project
+
+## Missions
+
+FindYourGame is a web and mobile application that allows users to comment all the games found on the freetogame.com API. This tool must help decentralize social networking comments and have a new web vision through participatory sources or simply by adding a comment to federate communities around websites.  
+
+Each comment will be shared by the entire FindYourGame user community. Our tool will make it possible to decentralize comments from social networks and to have a new vision of the web through participatory on sources (OSINT) or simply by adding a comment thus federating communities around websites.  
+
+## Requirements
+
+The client suggests some technical requirements that you can consider:  
+• the API can be developed using the Laravel framework,  
+• the front end can be developed in Vue.js,  
+• a database could be an SQL one such as MariaDB or PostgreSQL,  
+• there must be a secured authentication system.  
+Your tasks are numerous and include:  
+1. the setting up of a full-featured GitHub repository allowing your client/teacher to test and give you
+regular feedback, and your team to publish frequent releases,  
+2. the development and versioning of a minimum viable product, a working implementation of the main
+features and the design.  
 
 # Getting started
 
@@ -6,11 +38,9 @@
 
 Please check the official laravel installation guide for server requirements before you start. [Official Documentation](https://laravel.com/docs/5.4/installation#installation)
 
-Alternative installation is possible without local dependencies relying on [Docker](#docker). 
-
 Clone the repository
 
-    git clone git@github.com:YOWL-Project/FindYourGameAPI.git
+    git clone https://github.com/YOWL-Project/FindYourGameAPI.git
 
 Switch to the repo folder
 
@@ -28,7 +58,7 @@ Generate a new application key
 
     php artisan key:generate
 
-Run the database migrations (*Set the database connection in .env before migrating*)
+Run the database migrations (**Set the database connection in .env before migrating**)
 
     php artisan migrate
 
@@ -49,44 +79,55 @@ You can now access the server at http://localhost:8000
     composer install
     cp .env.example .env
     php artisan key:generate
+
+**TL;DR command list**
+
+    git clone https://github.com/YOWL-Project/FindYourGameAPI.git
+    cd FindYourGameAPI
+    composer install
+    cp .env.example .env
     
-*Make sure you set the correct database connection information before running the migrations* [Environment variables](#environment-variables)
+**Make sure you set the correct database connection information before running the migrations** [Environment variables](#environment-variables)
 
     php artisan migrate
-    php artisan passport:install
     php artisan serve
 
 ## Database seeding
 
-*Populate the database with seed data with relationships which includes users, articles, comments, tags, favorites and follows. This can help you to quickly start testing the api or couple a frontend and start using it with ready content.*
+**Populate the database with seed data with relationships which includes users, articles, comments, tags, favorites and follows. This can help you to quickly start testing the api or couple a frontend and start using it with ready content.**
 
-Open the DummyDataSeeder and set the property values as per your requirement
+Open the DatabaseSeeder and set the property values as per your requirement
 
-    database/seeds/DummyDataSeeder.php
+    database/seeders/DatabaseSeeder.php
 
 Run the database seeder and you're done
 
     php artisan db:seed
 
-**Note** : It's recommended to have a clean database before seeding. You can refresh your migrations at any point to clean the database by running the following command
+***Note*** : It's recommended to have a clean database before seeding. You can refresh your migrations at any point to clean the database by running the following command
 
     php artisan migrate:refresh
     
-## Docker
+# Code overview
 
-To install with [Docker](https://www.docker.com), run following commands:
+## Folders
 
-git clone git@github.com:gothinkster/laravel-realworld-example-app.git
-cd laravel-realworld-example-app
-cp .env.example.docker .env
-docker run -v $(pwd):/app composer install
-cd ./docker
-docker-compose up -d
-docker-compose exec php php artisan key:generate
-docker-compose exec php php artisan jwt:generate
-docker-compose exec php php artisan migrate
-docker-compose exec php php artisan db:seed
-docker-compose exec php php artisan serve --host=0.0.0.0
+- `app` - Contains all the Eloquent models
+- `app/Http/Controllers` - Contains all the controllers
+- `app/Http/Middleware` - Contains the auth middleware
+- `config` - Contains all the application configuration files
+- `database/factories` - Contains the model factory the models concerned  
+- `database/migrations` - Contains all the database migrations
+- `database/seeders` - Contains the database seeder
+- `routes` - Contains all the api routes defined in api.php file
+
+## Environment variables
+
+- `.env` - Environment variables can be set in this file
+
+***Note*** : You can quickly set the database information and other variables in this file and have the application fully working.
+
+----------
 
 The api can be accessed at [http://localhost:8000/api](http://localhost:8000/api).
 
@@ -99,41 +140,6 @@ This application adheres to the api specifications set by the [Thinkster](https:
 
 
 More information regarding the project can be found here https://github.com/gothinkster/realworld
-
-----------
-
-# Code overview
-
-## Dependencies
-
-- [jwt-auth](https://github.com/tymondesigns/jwt-auth) - For authentication using JSON Web Tokens
-- [laravel-cors](https://github.com/barryvdh/laravel-cors) - For handling Cross-Origin Resource Sharing (CORS)
-
-## Folders
-
-- app - Contains all the Eloquent models
-- app/Http/Controllers/Api - Contains all the api controllers
-- app/Http/Middleware - Contains the JWT auth middleware
-- app/Http/Requests/Api - Contains all the api form requests
-- app/RealWorld/Favorite - Contains the files implementing the favorite feature
-- app/RealWorld/Filters - Contains the query filters used for filtering api requests
-- app/RealWorld/Follow - Contains the files implementing the follow feature
-- app/RealWorld/Paginate - Contains the pagination class used to paginate the result
-- app/RealWorld/Slug - Contains the files implementing slugs to articles
-- app/RealWorld/Transformers - Contains all the data transformers
-- config - Contains all the application configuration files
-- database/factories - Contains the model factory for all the models
-- database/migrations - Contains all the database migrations
-- database/seeds - Contains the database seeder
-- routes - Contains all the api routes defined in api.php file
-- tests - Contains all the application tests
-- tests/Feature/Api - Contains all the api tests
-
-## Environment variables
-
-- .env - Environment variables can be set in this file
-
-**Note** : You can quickly set the database information and other variables in this file and have the application fully working.
 
 ----------
 
