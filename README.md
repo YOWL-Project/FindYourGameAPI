@@ -72,20 +72,13 @@ Start the local development server
 
 You can now access the server at http://localhost:8000
 
-*TL;DR command list*
-
-    git clone git@github.com:YOWL-Project/FindYourGameAPI.git
-    cd FindYourGameAPI
-    composer install
-    cp .env.example .env
-    php artisan key:generate
-
 **TL;DR command list**
 
     git clone https://github.com/YOWL-Project/FindYourGameAPI.git
     cd FindYourGameAPI
     composer install
     cp .env.example .env
+    php artisan key:generate
     
 **Make sure you set the correct database connection information before running the migrations** [Environment variables](#environment-variables)
 
