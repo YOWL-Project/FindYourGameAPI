@@ -1,6 +1,7 @@
 # FindYourGame
+
 Developing a solution from client needs.  
-Back using :  
+Back using :
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
@@ -15,9 +16,9 @@ Back using :
 
 ## Missions
 
-FindYourGame is a web and mobile application that allows users to comment all the games found on the freetogame.com API. This tool must help decentralize social networking comments and have a new web vision through participatory sources or simply by adding a comment to federate communities around websites.  
+FindYourGame is a web and mobile application that allows users to comment all the games found on the freetogame.com API. This tool must help decentralize social networking comments and have a new web vision through participatory sources or simply by adding a comment to federate communities around websites.
 
-Each comment will be shared by the entire FindYourGame user community. Our tool will make it possible to decentralize comments from social networks and to have a new vision of the web through participatory on sources (OSINT) or simply by adding a comment thus federating communities around websites.  
+Each comment will be shared by the entire FindYourGame user community. Our tool will make it possible to decentralize comments from social networks and to have a new vision of the web through participatory on sources (OSINT) or simply by adding a comment thus federating communities around websites.
 
 ## Requirements
 
@@ -26,11 +27,12 @@ The client suggests some technical requirements that you can consider:
 • the front end can be developed in Vue.js,  
 • a database could be an SQL one such as MariaDB or PostgreSQL,  
 • there must be a secured authentication system.  
-Your tasks are numerous and include:  
+Your tasks are numerous and include:
+
 1. the setting up of a full-featured GitHub repository allowing your client/teacher to test and give you
-regular feedback, and your team to publish frequent releases,  
+   regular feedback, and your team to publish frequent releases,
 2. the development and versioning of a minimum viable product, a working implementation of the main
-features and the design.  
+   features and the design.
 
 # Getting started
 
@@ -79,10 +81,11 @@ You can now access the server at http://localhost:8000
     composer install
     cp .env.example .env
     php artisan key:generate
-    
+
 **Make sure you set the correct database connection information before running the migrations** [Environment variables](#environment-variables)
 
     php artisan migrate
+    php artisan passport:install
     php artisan serve
 
 ## Database seeding
@@ -97,30 +100,40 @@ Run the database seeder and you're done
 
     php artisan db:seed
 
-***Note*** : It's recommended to have a clean database before seeding. You can refresh your migrations at any point to clean the database by running the following command
+**_Note_** : It's recommended to have a clean database before seeding. You can refresh your migrations at any point to clean the database by running the following command
 
     php artisan migrate:refresh
-    
+
+**Make sure to set a nex passport client after refreshing your database** [Passport grant client](https://laravel.com/docs/8.x/passport#creating-a-password-grant-client)
+
+If you haven't yet or the easy method:
+    php artisan passport:install
+
+All passport methods needed:
+    php artisan passport:keys
+    php artisan passport:client
+    php artisan passport:client --password
+
 # Code overview
 
 ## Folders
 
-- `app` - Contains all the Eloquent models
-- `app/Http/Controllers` - Contains all the controllers
-- `app/Http/Middleware` - Contains the auth middleware
-- `config` - Contains all the application configuration files
-- `database/factories` - Contains the model factory the models concerned  
-- `database/migrations` - Contains all the database migrations
-- `database/seeders` - Contains the database seeder
-- `routes` - Contains all the api routes defined in api.php file
+-   `app` - Contains all the Eloquent models
+-   `app/Http/Controllers` - Contains all the controllers
+-   `app/Http/Middleware` - Contains the auth middleware
+-   `config` - Contains all the application configuration files
+-   `database/factories` - Contains the model factory the models concerned
+-   `database/migrations` - Contains all the database migrations
+-   `database/seeders` - Contains the database seeder
+-   `routes` - Contains all the api routes defined in api.php file
 
 ## Environment variables
 
-- `.env` - Environment variables can be set in this file
+-   `.env` - Environment variables can be set in this file
 
-***Note*** : You can quickly set the database information and other variables in this file and have the application fully working.
+**_Note_** : You can quickly set the database information and other variables in this file and have the application fully working.
 
-----------
+---
 
 The api can be accessed at [http://localhost:8000/api](http://localhost:8000/api).
 
@@ -130,11 +143,9 @@ This application adheres to the api specifications set by the [Thinkster](https:
 
     [Full API Spec](https://github.com/gothinkster/realworld/tree/master/api)
 
-
-
 More information regarding the project can be found here https://github.com/gothinkster/realworld
 
-----------
+---
 
 # Testing API
 
@@ -148,29 +159,28 @@ The api can now be accessed at
 
 Request headers
 
-| *Required* 	| *Key*              	| *Value*            	|
-|----------	|------------------	|------------------	|
-| Yes      	| Content-Type     	| application/json 	|
-| Yes      	| X-Requested-With 	| XMLHttpRequest   	|
-| Optional 	| Authorization    	| Token {JWT}      	|
+| _Required_ | _Key_            | _Value_          |
+| ---------- | ---------------- | ---------------- |
+| Yes        | Content-Type     | application/json |
+| Yes        | X-Requested-With | XMLHttpRequest   |
+| Optional   | Authorization    | Bearer {JWT}     |
 
 Refer the [api specification](#api-specification) for more info.
 
-----------
- 
-# Authentication
- 
-This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the Authorization header with Token scheme. The JWT authentication middleware handles the validation and authentication of the token. Please check the following sources to learn more about JWT.
- 
-- https://jwt.io/introduction/
-- https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
+---
 
-----------
+# Authentication
+
+This applications uses Passport Token (JWT) to handle authentication. The token is passed with each request using the Authorization header with Token scheme. The Passport authentication middleware handles the validation and authentication of the token. Please check the following sources to learn more about Passport.
+
+-   https://laravel.com/docs/8.x/passport
+
+---
 
 # Cross-Origin Resource Sharing (CORS)
- 
+
 This applications has CORS enabled by default on all API endpoints. The default configuration allows requests from http://localhost:3000 and http://localhost:4200 to help speed up your frontend testing. The CORS allowed origins can be changed by setting them in the config file. Please check the following sources to learn more about CORS.
- 
-- https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-- https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
-- https://www.w3.org/TR/cors
+
+-   https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+-   https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+-   https://www.w3.org/TR/cors
