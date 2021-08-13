@@ -107,9 +107,11 @@ Run the database seeder and you're done
 **Make sure to set a nex passport client after refreshing your database** [Passport grant client](https://laravel.com/docs/8.x/passport#creating-a-password-grant-client)
 
 If you haven't yet or the easy method:
+
     php artisan passport:install
 
 All passport methods needed:
+
     php artisan passport:keys
     php artisan passport:client
     php artisan passport:client --password
